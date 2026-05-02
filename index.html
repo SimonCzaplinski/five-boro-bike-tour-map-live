@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NYC Five Boro Bike Tour map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+html,body{margin:0;height:100%;font-family:Arial,sans-serif;background:#eef3f9;color:#132033}
+#app{display:grid;grid-template-columns:1fr 360px;height:100vh}
+#map{height:100%;width:100%}
+aside{background:#fff;border-left:1px solid #d9e1ec;padding:18px;overflow:auto}
+h1{font-size:24px;line-height:1.15;margin:0 0 8px}
+p{font-size:14px;color:#55667a;margin:0 0 14px}
+.card{border:1px solid #e0e6ef;border-radius:14px;padding:12px 12px 8px;margin-bottom:12px;background:#fbfcfe}
+.bar{height:10px;border-radius:999px;margin:-12px -12px 10px}
+.card h2{font-size:18px;margin:0 0 8px}
+ul{margin:0 0 0 18px;padding:0} li{margin:0 0 6px;font-size:14px;color:#26384e}
+.legend{position:absolute;left:14px;bottom:14px;z-index:900;background:#fff;padding:10px 12px;border-radius:12px;border:1px solid #d9e1ec;box-shadow:0 8px 20px rgba(0,0,0,.12);font-size:13px;line-height:1.45;max-width:280px}
+.sw{display:inline-block;width:18px;height:4px;border-radius:99px;vertical-align:middle;margin-right:8px}
+@media (max-width: 900px){#app{grid-template-columns:1fr} #map{height:600px !important; min-height:600px !important;} aside{height:auto;border-left:none;border-top:1px solid #d9e1ec}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="map"></div>
+  <aside>
+    <h1>Actual New York map</h1>
+    <p>This is a real street map with the official Five Boro Bike Tour closure route drawn on top. The highlighted lines are the streets and road segments closed to regular car traffic on Sunday, May 3, 2026.</p>
+    <div class="card"><div class="bar" style="background:#0A6CFF"></div><h2>Lower Manhattan to Midtown</h2><ul><li>Greenwich St</li><li>Trinity Pl</li><li>Church St</li><li>Chambers St</li><li>Worth St</li><li>Canal St</li><li>6th Ave</li><li>W 59th St</li></ul></div><div class="card"><div class="bar" style="background:#0A6CFF"></div><h2>Central Park to Harlem</h2><ul><li>Central Park East Dr</li><li>Adam Clayton Powell Jr Blvd</li><li>135th St</li><li>Madison Ave Bridge</li></ul></div><div class="card"><div class="bar" style="background:#7C3AED"></div><h2>Bronx loop</h2><ul><li>E 138th St</li><li>3rd Ave</li><li>3rd Ave Bridge</li></ul></div><div class="card"><div class="bar" style="background:#0A6CFF"></div><h2>FDR to Queensboro</h2><ul><li>Harlem River Dr / FDR Dr southbound</li><li>E 116th St</li><li>Pleasant Ave</li><li>E 63rd St</li><li>Queensboro Bridge upper level</li></ul></div><div class="card"><div class="bar" style="background:#109E63"></div><h2>Queens</h2><ul><li>Queens Plaza South</li><li>21st St</li><li>Hoyt Ave N</li><li>19th St</li><li>Ditmars Blvd</li><li>Shore Blvd</li><li>Astoria Park South</li><li>14th St</li><li>31st Ave</li><li>Vernon Blvd</li><li>44th Dr</li><li>11th St</li><li>Pulaski Bridge</li></ul></div><div class="card"><div class="bar" style="background:#FF8A00"></div><h2>Brooklyn</h2><ul><li>McGuinness Blvd</li><li>Java St</li><li>Greenpoint Ave</li><li>Franklin St</li><li>Kent Ave</li><li>Williamsburg St W</li><li>Flushing Ave</li><li>Navy St</li><li>York St</li><li>Gold St</li><li>Front St</li><li>Old Fulton St</li><li>Furman St</li><li>Atlantic Ave</li><li>Columbia St</li><li>BQE / Gowanus Expy</li><li>Verrazzano lower level</li></ul></div><div class="card"><div class="bar" style="background:#D93025"></div><h2>Staten Island finish</h2><ul><li>Bay St</li><li>Hylan Blvd</li><li>Edgewater / Front St</li><li>Hannah St</li><li>Richmond Terrace</li></ul></div>
+  </aside>
+</div>
+<div class="legend">
+  <div><span class="sw" style="background:#0A6CFF"></span>Manhattan</div>
+  <div><span class="sw" style="background:#7C3AED"></span>Bronx</div>
+  <div><span class="sw" style="background:#109E63"></span>Queens</div>
+  <div><span class="sw" style="background:#FF8A00"></span>Brooklyn</div>
+  <div><span class="sw" style="background:#D93025"></span>Staten Island</div>
+  <div style="margin-top:8px;color:#55667a">Zoom in and tap a route segment to see the closed streets on that part of the map.</div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+const segments = [{"name": "Lower Manhattan to Midtown", "color": "#0A6CFF", "streets": ["Greenwich St", "Trinity Pl", "Church St", "Chambers St", "Worth St", "Canal St", "6th Ave", "W 59th St"], "coords": [[40.7048, -74.0137], [40.7088, -74.0115], [40.7125, -74.0103], [40.7182, -74.0092], [40.7216, -74.0055], [40.7362, -74.0005], [40.7525, -73.9942], [40.7647, -73.9882]]}, {"name": "Central Park to Harlem", "color": "#0A6CFF", "streets": ["Central Park East Dr", "Adam Clayton Powell Jr Blvd", "135th St", "Madison Ave Bridge"], "coords": [[40.7647, -73.9882], [40.7708, -73.9812], [40.7812, -73.9738], [40.7939, -73.9669], [40.8075, -73.9596], [40.8175, -73.9478], [40.8185, -73.9382]]}, {"name": "Bronx loop", "color": "#7C3AED", "streets": ["E 138th St", "3rd Ave", "3rd Ave Bridge"], "coords": [[40.8185, -73.9382], [40.8148, -73.9328], [40.8079, -73.9283], [40.8088, -73.9197], [40.8138, -73.9272]]}, {"name": "FDR to Queensboro", "color": "#0A6CFF", "streets": ["Harlem River Dr / FDR Dr southbound", "E 116th St", "Pleasant Ave", "E 63rd St", "Queensboro Bridge upper level"], "coords": [[40.8138, -73.9272], [40.7995, -73.9365], [40.7838, -73.9455], [40.7701, -73.9522], [40.7585, -73.9508]]}, {"name": "Queens", "color": "#109E63", "streets": ["Queens Plaza South", "21st St", "Hoyt Ave N", "19th St", "Ditmars Blvd", "Shore Blvd", "Astoria Park South", "14th St", "31st Ave", "Vernon Blvd", "44th Dr", "11th St", "Pulaski Bridge"], "coords": [[40.7585, -73.9508], [40.7488, -73.9443], [40.7525, -73.9388], [40.7625, -73.9315], [40.7708, -73.9232], [40.7772, -73.9082], [40.7685, -73.9152], [40.7595, -73.9218], [40.7492, -73.9315], [40.745, -73.9398], [40.7445, -73.9495]]}, {"name": "Brooklyn", "color": "#FF8A00", "streets": ["McGuinness Blvd", "Java St", "Greenpoint Ave", "Franklin St", "Kent Ave", "Williamsburg St W", "Flushing Ave", "Navy St", "York St", "Gold St", "Front St", "Old Fulton St", "Furman St", "Atlantic Ave", "Columbia St", "BQE / Gowanus Expy", "Verrazzano lower level"], "coords": [[40.7445, -73.9495], [40.7318, -73.9518], [40.726, -73.9568], [40.7215, -73.9602], [40.7165, -73.9588], [40.7122, -73.9542], [40.7048, -73.9758], [40.7005, -73.9905], [40.7025, -73.9952], [40.6962, -74.0038], [40.69, -74.0118], [40.6755, -74.0182], [40.6505, -74.0208], [40.6348, -74.0228]]}, {"name": "Staten Island finish", "color": "#D93025", "streets": ["Bay St", "Hylan Blvd", "Edgewater / Front St", "Hannah St", "Richmond Terrace"], "coords": [[40.6348, -74.0228], [40.6148, -74.0398], [40.6038, -74.0605], [40.6012, -74.0672], [40.605, -74.0805]]}];
+const map = L.map('map', {zoomControl:true}).setView([40.72, -73.96], 11);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+const bounds = [];
+segments.forEach(seg => {
+  const line = L.polyline(seg.coords, {color:seg.color, weight:7, opacity:0.9}).addTo(map);
+  bounds.push(...seg.coords);
+  line.bindPopup('<b>' + seg.name + '</b><br>' + seg.streets.join('<br>'));
+});
+map.fitBounds(bounds, {padding:[20,20]});
+</script>
+</body>
+</html>
