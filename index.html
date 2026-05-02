@@ -8,7 +8,7 @@
 <style>
 html,body{margin:0;height:100%;font-family:Arial,sans-serif;background:#eef3f9;color:#132033}
 #app{display:grid;grid-template-columns:1fr 360px;height:100vh}
-#map{height:100%;width:100%}
+#map{height:100%;width:100%;position:relative}
 aside{background:#fff;border-left:1px solid #d9e1ec;padding:18px;overflow:auto}
 h1{font-size:24px;line-height:1.15;margin:0 0 8px}
 p{font-size:14px;color:#55667a;margin:0 0 14px}
@@ -16,27 +16,28 @@ p{font-size:14px;color:#55667a;margin:0 0 14px}
 .bar{height:10px;border-radius:999px;margin:-12px -12px 10px}
 .card h2{font-size:18px;margin:0 0 8px}
 ul{margin:0 0 0 18px;padding:0} li{margin:0 0 6px;font-size:14px;color:#26384e}
-.legend{position:absolute;left:14px;bottom:14px;z-index:900;background:#fff;padding:10px 12px;border-radius:12px;border:1px solid #d9e1ec;box-shadow:0 8px 20px rgba(0,0,0,.12);font-size:13px;line-height:1.45;max-width:280px}
+.legend{position:absolute;left:14px;bottom:14px;z-index:900;background:#fff;padding:10px 12px;border-radius:12px;border:1px solid #d9e1ec;box-shadow:0 8px 20px rgba(0,0,0,.12);font-size:13px;line-height:1.45;max-width:280px;box-sizing:border-box}
 .sw{display:inline-block;width:18px;height:4px;border-radius:99px;vertical-align:middle;margin-right:8px}
-@media (max-width: 900px){#app{grid-template-columns:1fr} #map{height:600px !important; min-height:600px !important;} aside{height:auto;border-left:none;border-top:1px solid #d9e1ec}}
+@media (max-width: 900px){#app{grid-template-columns:1fr;height:auto;min-height:100vh} #map{height:600px !important; min-height:600px !important;} .legend{left:14px;right:14px;max-width:none} aside{height:auto;border-left:none;border-top:1px solid #d9e1ec}}
 </style>
 </head>
 <body>
 <div id="app">
-  <div id="map"></div>
+  <div id="map">
+    <div class="legend">
+      <div><span class="sw" style="background:#0A6CFF"></span>Manhattan</div>
+      <div><span class="sw" style="background:#7C3AED"></span>Bronx</div>
+      <div><span class="sw" style="background:#109E63"></span>Queens</div>
+      <div><span class="sw" style="background:#FF8A00"></span>Brooklyn</div>
+      <div><span class="sw" style="background:#D93025"></span>Staten Island</div>
+      <div style="margin-top:8px;color:#55667a">Zoom in and tap a route segment to see the closed streets on that part of the map.</div>
+    </div>
+  </div>
   <aside>
     <h1>Actual New York map</h1>
     <p>This is a real street map with the official Five Boro Bike Tour closure route drawn on top. The highlighted lines are the streets and road segments closed to regular car traffic on Sunday, May 3, 2026.</p>
     <div class="card"><div class="bar" style="background:#0A6CFF"></div><h2>Lower Manhattan to Midtown</h2><ul><li>Greenwich St</li><li>Trinity Pl</li><li>Church St</li><li>Chambers St</li><li>Worth St</li><li>Canal St</li><li>6th Ave</li><li>W 59th St</li></ul></div><div class="card"><div class="bar" style="background:#0A6CFF"></div><h2>Central Park to Harlem</h2><ul><li>Central Park East Dr</li><li>Adam Clayton Powell Jr Blvd</li><li>135th St</li><li>Madison Ave Bridge</li></ul></div><div class="card"><div class="bar" style="background:#7C3AED"></div><h2>Bronx loop</h2><ul><li>E 138th St</li><li>3rd Ave</li><li>3rd Ave Bridge</li></ul></div><div class="card"><div class="bar" style="background:#0A6CFF"></div><h2>FDR to Queensboro</h2><ul><li>Harlem River Dr / FDR Dr southbound</li><li>E 116th St</li><li>Pleasant Ave</li><li>E 63rd St</li><li>Queensboro Bridge upper level</li></ul></div><div class="card"><div class="bar" style="background:#109E63"></div><h2>Queens</h2><ul><li>Queens Plaza South</li><li>21st St</li><li>Hoyt Ave N</li><li>19th St</li><li>Ditmars Blvd</li><li>Shore Blvd</li><li>Astoria Park South</li><li>14th St</li><li>31st Ave</li><li>Vernon Blvd</li><li>44th Dr</li><li>11th St</li><li>Pulaski Bridge</li></ul></div><div class="card"><div class="bar" style="background:#FF8A00"></div><h2>Brooklyn</h2><ul><li>McGuinness Blvd</li><li>Java St</li><li>Greenpoint Ave</li><li>Franklin St</li><li>Kent Ave</li><li>Williamsburg St W</li><li>Flushing Ave</li><li>Navy St</li><li>York St</li><li>Gold St</li><li>Front St</li><li>Old Fulton St</li><li>Furman St</li><li>Atlantic Ave</li><li>Columbia St</li><li>BQE / Gowanus Expy</li><li>Verrazzano lower level</li></ul></div><div class="card"><div class="bar" style="background:#D93025"></div><h2>Staten Island finish</h2><ul><li>Bay St</li><li>Hylan Blvd</li><li>Edgewater / Front St</li><li>Hannah St</li><li>Richmond Terrace</li></ul></div>
   </aside>
-</div>
-<div class="legend">
-  <div><span class="sw" style="background:#0A6CFF"></span>Manhattan</div>
-  <div><span class="sw" style="background:#7C3AED"></span>Bronx</div>
-  <div><span class="sw" style="background:#109E63"></span>Queens</div>
-  <div><span class="sw" style="background:#FF8A00"></span>Brooklyn</div>
-  <div><span class="sw" style="background:#D93025"></span>Staten Island</div>
-  <div style="margin-top:8px;color:#55667a">Zoom in and tap a route segment to see the closed streets on that part of the map.</div>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
